@@ -1,174 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style>
-        *{
-            padding: 0;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
             margin: 0;
-            box-sizing: border-box;
-        }
-        .raffleUI{
-            display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            min-height: 100vh;
-            background: #00beac;
-        }
-        .container{
-            height: 350px;
-            width: 350px;
-            background: #4ed4c6;
-            position: relative;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 0 10px gray;
-            transition: 3s all;
-        }
-        .container div{
-            height: 50%;
-            width: 200px;
-            clip-path: polygon(100% 0,50% 100%, 0 0);
-            transform: translateX(-50%);
-            transform-origin: bottom;
-            position: absolute;
-            left: 21%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-family: monospace;
-            font-weight: 1000;
-            color:#008276; 
-             writing-mode: vertical-rl;
-        }
-        .container .one{
-            background: #baf4ee;
-            left: 50%;
-        }
-        .container .two{
-            background: #4ed4c6;
-            transform: rotate(60deg);
-        }
-        .container .three{
-            background: #baf4ee;
-            transform: rotate(120deg);
-        }
-        .container .four{
-            background: #4ed4c6;
-            transform: rotate(180deg);
-        }
-        .container .five{
-            background: #baf4ee;
-            transform: rotate(240deg);
-        }
-        .container .six{
-            background: #4ed4c6;
-            transform: rotate(300deg);
-        }
-        .mid{
-            height: 25px;
-            width: 25px;
-            border-radius: 50%;
-            position: absolute;
-            background: #008276;
-        }
-        #spin{
-            height: 60px;
-            width: 200px;
-            background: #4ed4c6;
-            position: absolute;
-            margin-top: 600px;
-            font-size: 30px;
-            color: white;
-            font-weight: 1000;
-            letter-spacing: 4px;
-            border: 1px solid white;
-            cursor: pointer;
-            box-shadow: 0 5px 10px gray;
-            transition: 0.2s all;
-        }
-        #spin:hover{
-            box-shadow: none;
-        }
-        .stoper{
-            height: 50px;
-            width: 40px;
-            background: #ffd600;
-            position: absolute;
-            clip-path: polygon(100% 0,50% 100%, 0 0);
-            margin-top: -350px;
         }
 
-        .number-button  {
-            display: inline-block;
-            margin: 5px; /* Adjust the margin as needed to control the spacing between numbers */
-            padding: 10px;
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr); /* Create a 15x10 grid */
+            gap: 10px; /* Adjust the gap between numbers */
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px; /* Adjust the width of each number block */
+            height: 50px; /* Adjust the height of each number block */
             background-color: #008276; /* Background color */
             color: #fff; /* Text color */
             font-size: 18px; /* Font size */
             font-weight: bold; /* Font weight */
             border-radius: 5px; /* Rounded corners */
-            text-align: center; /* Center the text horizontally */
-            transition: color 0.3s; /* Smooth transition for color change */
+            transition: transform 5s ease-in-out; /* Transition effect for raffle animation */
+            overflow: hidden;
         }
-        
-        .number-button:hover {
-            background-color: #4ed4c6;; /* Text color on hover */
+
+        .number.selected {
+            transform: scale(2) rotate(0deg); /* Selected number styling */
+            overflow: visible; /* Display overflow for selected number */
+            z-index: 1; /* Bring the selected number to the front */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px; /* Enlarge the selected number */
+            height: 200px; /* Enlarge the selected number */
+            font-size: 36px; /* Increase the font size of the selected number */
         }
-        
-        
-        
+
+        .picker-title {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .spin-button, .start-again-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #008276;
+            color: #fff;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .start-again-link.disabled {
+            pointer-events: none; /* Disable the link when it's marked as disabled */
+            background-color: #ccc; /* Change the background color when disabled */
+        }
     </style>
-	<title>Lucky Spin</title>
+    <title>Random Number Picker</title>
 </head>
 <body>
-    <div class="raffleUI">
-	<div class="container">
-		<div class="one">{{winning_number}}</div>
-		<div class="two">78</div>
-		<div class="three">67</div>
-		<div class="four">45</div>
-		<div class="five">99</div>
-		<div class="six">27</div>
-	</div>
-		<span class="mid"></span>
-        <div class="numbers">
-            <h3 style="text-align: center; margin-top: 20px;">
-                Pick a number before Spin 
-            </h3>
-            <span class="number-button option" data-number="27">27</span>
-            <span class="number-button option" data-number="{{winning_number}}">{{winning_number}}</span>
-            <span class="number-button option" data-number="45">45</span>
-            <span class="number-button option" data-number="99">99</span>
-            <span class="number-button option" data-number="78">78</span>
-            <span class="number-button option" data-number="67">67</span>
-        </div>
-		<button id="spin">Spin</button>
-		<div class="stoper"></div>
+    <h2 class="picker-title">Random Number Picker</h2>
+    <div class="number-grid">
+        <!-- Generate numbers from 1 to 150 using Python -->
+        {% for i in range(1, 151) %}
+            <div class="number">{{ i }}</div>
+        {% endfor %}
     </div>
-    <script>
-        let container = document.querySelector(".container");
-        let btn = document.getElementById("spin");
-        let number = Math.ceil(Math.random() * 10000);
-        
-        let flash = document.querySelector(".container div");
-        
-        
-        btn.onclick = function () {
-          container.style.transform = "rotate(" + number + "deg)";
-          number += Math.ceil(Math.random() * 10000);
-        
-        }
-          
-        
-    
-    </script>
+    <button class="spin-button" id="spin">Spin</button>
+    <a class="start-again-link" id="start-again">Start Again</a>
 
+    <script>
+        const spinButton = document.getElementById('spin');
+        const startAgainLink = document.getElementById('start-again');
+        const numberDivs = document.querySelectorAll('.number');
+
+        spinButton.addEventListener('click', () => {
+            // Disable the spin button
+            spinButton.disabled = true;
+
+            // Rotate the numbers for 5 seconds
+            numberDivs.forEach((div) => {
+                div.style.transform = `scale(0.5) rotate(${Math.floor(Math.random() * 360)}deg)`;
+            });
+
+            // After 5 seconds, enable the start again link
+            setTimeout(() => {
+                // Randomly select one number
+                const selectedNumber = Math.floor(Math.random() * numberDivs.length);
+                numberDivs.forEach((div, index) => {
+                    // Reset all numbers to their original state
+                    div.style.transform = 'scale(1) rotate(0deg)';
+                    div.classList.remove('selected');
+                    // Make the selected number appear larger in the center
+                    if (index === selectedNumber) {
+                        div.classList.add('selected');
+                    }
+                });
+                // Enable the start again link
+                startAgainLink.classList.remove('disabled');
+            }, 5000);
+        });
+
+        startAgainLink.addEventListener('click', () => {
+            // Reset all numbers to their original state
+            numberDivs.forEach((div) => {
+                div.style.transform = 'scale(1) rotate(0deg)';
+                div.classList.remove('selected');
+            });
+            // Enable the spin button and disable the start again link
+            spinButton.disabled = false;
+            startAgainLink.classList.add('disabled');
+        });
+    </script>
 </body>
 </html>
-
-    
