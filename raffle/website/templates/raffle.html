@@ -151,51 +151,22 @@
 		<div class="stoper"></div>
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const numberButtons = document.querySelectorAll(".number-button");
-            const spinBtn = document.getElementById("spin");
-            let selectedNumber = null; // Variable to store the selected number
+        let container = document.querySelector(".container");
+        let btn = document.getElementById("spin");
+        let number = Math.ceil(Math.random() * 10000);
         
-            // Add a click event listener to each number button
-            numberButtons.forEach((button) => {
-                button.addEventListener("click", () => {
-                    // Get the number from the data attribute of the button
-                    selectedNumber = button.getAttribute("data-number");
-                });
-            });
+        let flash = document.querySelector(".container div");
         
-            spinBtn.addEventListener("click", () => {
-                if (selectedNumber === null) {
-                    alert("Please select a number before spinning.");
-                    return;
-                }
         
-                // Make an AJAX request to send the selected number to the server
-                fetch("/raffle", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ number: selectedNumber }),
-                })
-                    .then((response) => {
-                        if (response.status === 200) {
-                            // Success: Handle the response accordingly
-                            window.location.href = '/winning_page';
-                        } else {
-                            // Error: Handle the response accordingly
-                            window.location.href = '/sorry_page';
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                    });
-            });
-        });
+        btn.onclick = function () {
+          container.style.transform = "rotate(" + number + "deg)";
+          number += Math.ceil(Math.random() * 10000);
         
+        }
+          
+        
+    
     </script>
-    
-    
 
 </body>
 </html>
