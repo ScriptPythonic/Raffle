@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin: 20px auto;
+            width: 300px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        #winning-number {
+            font-size: 36px;
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Admin Interface</h1>
+    <h2>Winning Number: <span id="winning-number">{{ winning_number }}</span></h2>
+
+    <form id="set-winning-number-form">
+        <label for="winning_number">Set Winning Number: </label>
+        <input type="number" name="winning_number" id="winning_number_input" required>
+        <button type="button" id="set-winning-number_button">Update Winning Number</button>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            // When the "Update Winning Number" button is clicked
+            $('#set-winning-number_button').click(function() {
+                var newWinningNumber = $('#winning_number_input').val();
+
+                // Make an AJAX POST request to update the winning number
+                $.ajax({
+                    url: '/admin',  // Use the correct URL for the admin update
+                    type: 'POST',
+                    data: { winning_number: newWinningNumber },
+                    success: function(data) {
+                        if (data === "Done") {
+                            // Update the displayed winning number on the page
+                            $('#winning-number').text(newWinningNumber);
+                        }
+                    },
+                    error: function() {
+                        alert('Error: Unable to update the winning number');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
