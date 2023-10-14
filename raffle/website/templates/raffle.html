@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,6 +87,10 @@
             padding: 40px;
         }
 
+        #winning-number p {
+            font-size: 20px;
+        }
+
         .start-again-link.disabled {
             pointer-events: none; /* Disable the link when it's marked as disabled */
             background-color: #ccc; /* Change the background color when disabled */
@@ -104,7 +107,7 @@
             <div class="number">{{ i }}</div>
 
         {% endfor %}
-        <div class="number" id="winning-number" style="display: none ; text-align: center;">{{ winning_number }}</div>
+        <div class="number" id="winning-number" style="display: none ; text-align: center;"><p>Winner !!</p>{{ winning_number }}</div>
     </div>
     <button class="spin-button" id="spin">Spin</button>
     <a href="\raffle" class="start-again-link" id="start-again">Start Again</a>
@@ -145,6 +148,12 @@
             }, 5000);
         });
     </script>
+    
+        
+  
+</body>
+</html>
+
     
         
   
