@@ -110,6 +110,8 @@
         <div class="number" id="winning-number" style="display: none ; text-align: center;"><p>Winner !!</p>{{ winning_number }}</div>
     </div>
     <button class="spin-button" id="spin">Spin</button>
+    <audio id="winSound" src="{{ url_for('static', filename='image/music.mp3')}}"></audio>
+
     <a href="\raffle" class="start-again-link" id="start-again">Start Again</a>
 
   
@@ -117,36 +119,41 @@
         const spinButton = document.getElementById('spin');
         const numberDivs = document.querySelectorAll('.number');
         const winningNumberDiv = document.getElementById('winning-number');
-    
+        const winSound = document.getElementById('winSound'); // Reference the win sound element
+        
         spinButton.addEventListener('click', () => {
             // Disable the spin button
             spinButton.disabled = true;
             spinButton.style.backgroundColor = '#ccc'; // Change button color
-    
+            winSound.play();
             // Rotate the numbers for 5 seconds
             numberDivs.forEach((div) => {
                 div.style.transition = 'transform 5s ease-in-out';
                 div.style.transform = `scale(0.5) rotate(${Math.floor(Math.random() * 360)}deg)`;
             });
-    
+        
             // After 5 seconds, enable the spin button, reset the numbers, and display the winning number
             setTimeout(() => {
                 // Enable the spin button
                 spinButton.disabled = false;
                 spinButton.style.backgroundColor = '#008276'; // Restore button color
-    
+        
                 // Reset the numbers
                 numberDivs.forEach((div) => {
                     div.style.transition = 'none';
                     div.style.transform = 'scale(1) rotate(0deg)';
                 });
-    
+        
+                // Play the win sound
+               // Play the win sound effect
+        
                 // Display the winning number
                 winningNumberDiv.style.display = 'block';
                 spinButton.disabled = true;
                 spinButton.classList.add('disabled');
-            }, 5000);
+            }, 3900);
         });
+        
     </script>
     
         
@@ -154,8 +161,3 @@
 </body>
 </html>
 
-    
-        
-  
-</body>
-</html>
