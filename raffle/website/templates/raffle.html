@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,10 +74,25 @@
             cursor: pointer;
         }
 
+        #winning-number{
+            transform: scale(2) rotate(0deg); /* Selected number styling */
+            overflow: visible; /* Display overflow for selected number */
+            z-index: 1; /* Bring the selected number to the front */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px; /* Enlarge the selected number */
+            height: 200px; /* Enlarge the selected number */
+            font-size: 67px;
+            padding: 40px;
+        }
+
         .start-again-link.disabled {
             pointer-events: none; /* Disable the link when it's marked as disabled */
             background-color: #ccc; /* Change the background color when disabled */
         }
+        
     </style>
     <title>Random Number Picker</title>
 </head>
@@ -86,53 +102,51 @@
         <!-- Generate numbers from 1 to 150 using Python -->
         {% for i in range(1, 151) %}
             <div class="number">{{ i }}</div>
+
         {% endfor %}
+        <div class="number" id="winning-number" style="display: none ; text-align: center;">{{ winning_number }}</div>
     </div>
     <button class="spin-button" id="spin">Spin</button>
-    <a class="start-again-link" id="start-again">Start Again</a>
+    <a href="\raffle" class="start-again-link" id="start-again">Start Again</a>
 
+  
     <script>
         const spinButton = document.getElementById('spin');
-        const startAgainLink = document.getElementById('start-again');
         const numberDivs = document.querySelectorAll('.number');
-
+        const winningNumberDiv = document.getElementById('winning-number');
+    
         spinButton.addEventListener('click', () => {
             // Disable the spin button
             spinButton.disabled = true;
-
+            spinButton.style.backgroundColor = '#ccc'; // Change button color
+    
             // Rotate the numbers for 5 seconds
             numberDivs.forEach((div) => {
+                div.style.transition = 'transform 5s ease-in-out';
                 div.style.transform = `scale(0.5) rotate(${Math.floor(Math.random() * 360)}deg)`;
             });
-
-            // After 5 seconds, enable the start again link
+    
+            // After 5 seconds, enable the spin button, reset the numbers, and display the winning number
             setTimeout(() => {
-                // Randomly select one number
-                const selectedNumber = Math.floor(Math.random() * numberDivs.length);
-                numberDivs.forEach((div, index) => {
-                    // Reset all numbers to their original state
+                // Enable the spin button
+                spinButton.disabled = false;
+                spinButton.style.backgroundColor = '#008276'; // Restore button color
+    
+                // Reset the numbers
+                numberDivs.forEach((div) => {
+                    div.style.transition = 'none';
                     div.style.transform = 'scale(1) rotate(0deg)';
-                    div.classList.remove('selected');
-                    // Make the selected number appear larger in the center
-                    if (index === selectedNumber) {
-                        div.classList.add('selected');
-                    }
                 });
-                // Enable the start again link
-                startAgainLink.classList.remove('disabled');
+    
+                // Display the winning number
+                winningNumberDiv.style.display = 'block';
+                spinButton.disabled = true;
+                spinButton.classList.add('disabled');
             }, 5000);
         });
-
-        startAgainLink.addEventListener('click', () => {
-            // Reset all numbers to their original state
-            numberDivs.forEach((div) => {
-                div.style.transform = 'scale(1) rotate(0deg)';
-                div.classList.remove('selected');
-            });
-            // Enable the spin button and disable the start again link
-            spinButton.disabled = false;
-            startAgainLink.classList.add('disabled');
-        });
     </script>
+    
+        
+  
 </body>
 </html>
