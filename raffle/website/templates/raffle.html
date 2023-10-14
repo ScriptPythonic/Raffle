@@ -73,20 +73,24 @@
             cursor: pointer;
         }
 
-        #winning-number{
-            transform: scale(2) rotate(0deg); /* Selected number styling */
-            overflow: visible; /* Display overflow for selected number */
-            z-index: 1; /* Bring the selected number to the front */
+        #winning-number {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            text-align: center; /* Center text within the div */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 200px; /* Enlarge the selected number */
-            height: 200px; /* Enlarge the selected number */
-            font-size: 67px;
-            padding: 40px;
-        }
-
+            width: 200px;
+            height: 200px;
+            font-size: 36px;
+            overflow: visible;
+            z-index: 1;
+            margin-bottom: 200px;
+            
+          }
+          
         #winning-number p {
             font-size: 20px;
         }
@@ -150,6 +154,17 @@
         
                 // Display the winning number
                 winningNumberDiv.style.display = 'block';
+                winningNumberDiv.style.transform = 'scale(2) rotate(0deg)';
+                winningNumberDiv.style.overflow = 'visible';
+                winningNumberDiv.style.zIndex = '1';
+                winningNumberDiv.style.position = 'absolute';
+                winningNumberDiv.style.top = '50%';
+                winningNumberDiv.style.left = '50%';
+                winningNumberDiv.style.transform = 'translate(-50%, -50%)';
+                winningNumberDiv.style.width = '200px';
+                winningNumberDiv.style.height = '200px';
+                winningNumberDiv.style.fontSize = '67px';
+
                 spinButton.disabled = true;
                 spinButton.classList.add('disabled');
             }, 3900);
