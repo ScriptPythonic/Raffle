@@ -110,8 +110,9 @@
         <div class="number" id="winning-number" style="display: none ; text-align: center;"><p>Winner !!</p>{{ winning_number }}</div>
     </div>
     <button class="spin-button" id="spin">Spin</button>
-    <audio id="winSound" src="{{ url_for('static', filename='image/music.mp3')}}"></audio>
-
+    <audio id="winSound" >
+    <source   src="{{ url_for('static', filename='image/music.mp3')}}" type="audio/mpeg"> 
+    </audio>
     <a href="\raffle" class="start-again-link" id="start-again">Start Again</a>
 
   
